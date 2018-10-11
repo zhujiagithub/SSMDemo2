@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace指向接口-->
+<mapper namespace="com.dean.ssmdemo2.mapper.EmpMapper">
+    <!--select标签代表查询，findById与方法名对应-->
+    <select id="findById" parameterType="Integer" resultType="com.dean.ssmdemo2.entity.Emp">
+        select * from emp where empno = #{value }
+    </select>
+    <select id="findEmps" resultType="java.util.LinkedHashMap" parameterType="java.util.Map">
+        SELECT * from emp e, dept d WHERE e.deptno = d.deptno
+        <if test="dn != null">
+        AND d.dname=#{dn}
+        </if>
+        <if test="psal != null">
+        AND e.sal > #{psal}
+        </if>
+    </select>
+    <insert id="insertEmp" parameterType="com.dean.ssmdemo2.entity.Emp">
+      INSERT INTO `scott`.`emp` ( `ename`, `job`, `mgr`, `hiredate`, `sal`, `comm`, `deptno`)
+      VALUES (#{ename}, #{job}, #{mgr}, #{hiredate}, #{sal}, #{comm}, #{deptno})
+      <selectKey keyProperty="empno" keyColumn="empno" resultType="Integer" order="AFTER">
+          select Last_INSERT_ID()
+      </selectKey>
+    </insert>
+
+    <update id="updateEmp" parameterType="com.dean.ssmdemo2.entity.Emp">
+        UPDATE `scott`.`emp`
+        SET `empno`=#{empno}, `ename`=#{ename}, `job`=#{job}, `mgr`=#{mgr}, `hiredate`=#{hiredate}, `sal`=#{sal}, `comm`=#{comm}, `deptno`=#{deptno}
+        WHERE (`empno`=#{empno})
+    </update>
+
+    <delete id="deleteEmp" parameterType="Integer">
+        DELETE from emp where empno = #{value }
+    </delete>
+</mapper>
