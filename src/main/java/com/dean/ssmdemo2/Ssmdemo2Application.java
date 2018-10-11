@@ -11,4 +11,6 @@ public class Ssmdemo2Application {
     public static void main(String[] args) {
         SpringApplication.run(Ssmdemo2Application.class, args);
     }
+
+
 }
